@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Information Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen py-8">
+    <div id="formPage" class="hidden max-w-2xl mx-auto px-4">
+        <div class="bg-white rounded-2xl shadow-xl p-8">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-semibold text-gray-800 mb-2">Customer Information</h1>
+                <p class="text-gray-600">Please fill out your details below</p>
+            </div>
+
+            <form id="customerForm" class="space-y-6">
+                <!-- Name Section -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="firstName" class="block text-sm font-medium text-gray-700 mb-2">First Name *</label>
+                        <input type="text" id="firstName" name="firstName" required
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                               placeholder="Enter your first name">
+                    </div>
+                    <div>
+                        <label for="lastName" class="block text-sm font-medium text-gray-700 mb-2">Last Name *</label>
+                        <input type="text" id="lastName" name="lastName" required
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                               placeholder="Enter your last name">
+                    </div>
+                </div>
+
+                <!-- Date of Birth -->
+                <div>
+                    <label for="dateOfBirth" class="block text-sm font-medium text-gray-700 mb-2">Date of Birth *</label>
+                    <input type="date" id="dateOfBirth" name="dateOfBirth" required
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                </div>
+
+                <!-- Address Section -->
+                <div class="space-y-4">
+                    <h3 class="text-lg font-medium text-gray-800 border-b border-gray-200 pb-2">Address Information</h3>
+                    
+                    <div>
+                        <label for="streetAddress" class="block text-sm font-medium text-gray-700 mb-2">Street Address *</label>
+                        <input type="text" id="streetAddress" name="streetAddress" required
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                               placeholder="123 Main Street">
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label for="suburb" class="block text-sm font-medium text-gray-700 mb-2">Suburb</label>
+                            <input type="text" id="suburb" name="suburb"
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                   placeholder="Suburb">
+                        </div>
+                        <div>
+                            <label for="city" class="block text-sm font-medium text-gray-700 mb-2">City/Town *</label>
+                            <input type="text" id="city" name="city" required
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                   placeholder="City/Town">
+                        </div>
+                        <div>
+                            <label for="postCode" class="block text-sm font-medium text-gray-700 mb-2">Post Code *</label>
+                            <input type="text" id="postCode" name="postCode" required
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                   placeholder="Post Code">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="space-y-4">
+                    <h3 class="text-lg font-medium text-gray-800 border-b border-gray-200 pb-2">Contact Information</h3>
+                    
+                    <div>
+                        <label for="phoneNumber" class="block text-sm font-medium text-gray-700 mb-2">Phone Number *</label>
+                        <input type="tel" id="phoneNumber" name="phoneNumber" required
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                               placeholder="(555) 123-4567">
+                    </div>
+
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
+                        <input type="email" id="email" name="email" required
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                               placeholder="your.email@example.com">
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="pt-6">
+                    <button type="submit" 
+                            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-4 px-6 rounded-lg transition-colors duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                        Submit Information
+                    </button>
+                </div>
+            </form>
+
+            <!-- Success Message (Hidden by default) -->
+            <div id="successMessage" class="hidden mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <svg class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm font-medium text-green-800">
+                            Thank you! Your information has been submitted successfully.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation to Dashboard -->
+            <div class="mt-6 text-center">
+                <button onclick="showDashboard()" 
+                        class="inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition-colors duration-200">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                    </svg>
+                    View Customer Dashboard
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Customer Dashboard Page (Main page) -->
+    <div id="dashboardPage" class="max-w-6xl mx-auto px-4 py-8">
+        <div class="bg-white rounded-2xl shadow-xl p-8">
+            <div class="flex justify-between items-center mb-8">
+                <div>
+                    <h1 class="text-3xl font-semibold text-gray-800 mb-2">Customer Dashboard</h1>
+                    <p class="text-gray-600">Manage and view customer information</p>
+                </div>
+                <button onclick="showForm()" 
+                        class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    Add New Customer
+                </button>
+            </div>
+
+
+
+            <!-- Customer List -->
+            <div class="bg-gray-50 rounded-lg p-6">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Customer List</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b border-gray-200">
+                                <th class="text-left py-3 px-4 font-medium text-gray-700">Name</th>
+                                <th class="text-left py-3 px-4 font-medium text-gray-700">City/Town</th>
+                                <th class="text-left py-3 px-4 font-medium text-gray-700">Verification Status</th>
+                                <th class="text-left py-3 px-4 font-medium text-gray-700">Date Added</th>
+                                <th class="text-left py-3 px-4 font-medium text-gray-700">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="customerTableBody">
+                            <tr class="border-b border-gray-100 hover:bg-white transition-colors duration-150">
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-medium text-sm mr-3">
+                                            JS
+                                        </div>
+                                        <span class="font-medium text-gray-900">John Smith</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-gray-600">Melbourne</td>
+                                <td class="py-4 px-4">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                        Verified
+                                    </span>
+                                </td>
+                                <td class="py-4 px-4 text-gray-600">Dec 15, 2024</td>
+                                <td class="py-4 px-4">
+                                    <button onclick="viewCustomerDetails(1)" 
+                                            class="text-blue-600 hover:text-blue-800 font-medium text-sm">
+                                        View Details
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-gray-100 hover:bg-white transition-colors duration-150">
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-medium text-sm mr-3">
+                                            SJ
+                                        </div>
+                                        <span class="font-medium text-gray-900">Sarah Johnson</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-gray-600">Sydney</td>
+                                <td class="py-4 px-4">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                        Pending
+                                    </span>
+                                </td>
+                                <td class="py-4 px-4 text-gray-600">Dec 14, 2024</td>
+                                <td class="py-4 px-4">
+                                    <button onclick="viewCustomerDetails(2)" 
+                                            class="text-blue-600 hover:text-blue-800 font-medium text-sm">
+                                        View Details
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-gray-100 hover:bg-white transition-colors duration-150">
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-white font-medium text-sm mr-3">
+                                            MW
+                                        </div>
+                                        <span class="font-medium text-gray-900">Michael Wilson</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-gray-600">Brisbane</td>
+                                <td class="py-4 px-4">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                        Verified
+                                    </span>
+                                </td>
+                                <td class="py-4 px-4 text-gray-600">Dec 13, 2024</td>
+                                <td class="py-4 px-4">
+                                    <button onclick="viewCustomerDetails(3)" 
+                                            class="text-blue-600 hover:text-blue-800 font-medium text-sm">
+                                        View Details
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-gray-100 hover:bg-white transition-colors duration-150">
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 bg-pink-500 rounded-full flex items-center justify-center text-white font-medium text-sm mr-3">
+                                            ED
+                                        </div>
+                                        <span class="font-medium text-gray-900">Emma Davis</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-gray-600">Perth</td>
+                                <td class="py-4 px-4">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                        Not Verified
+                                    </span>
+                                </td>
+                                <td class="py-4 px-4 text-gray-600">Dec 12, 2024</td>
+                                <td class="py-4 px-4">
+                                    <button onclick="viewCustomerDetails(4)" 
+                                            class="text-blue-600 hover:text-blue-800 font-medium text-sm">
+                                        View Details
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-gray-100 hover:bg-white transition-colors duration-150">
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center text-white font-medium text-sm mr-3">
+                                            AB
+                                        </div>
+                                        <span class="font-medium text-gray-900">Alex Brown</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-gray-600">Adelaide</td>
+                                <td class="py-4 px-4">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                        Pending
+                                    </span>
+                                </td>
+                                <td class="py-4 px-4 text-gray-600">Dec 10, 2024</td>
+                                <td class="py-4 px-4">
+                                    <button onclick="viewCustomerDetails(5)" 
+                                            class="text-blue-600 hover:text-blue-800 font-medium text-sm">
+                                        View Details
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Customer Details Modal -->
+    <div id="customerModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-8">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-semibold text-gray-800">Customer Details</h2>
+                    <button onclick="closeCustomerModal()" 
+                            class="text-gray-400 hover:text-gray-600 transition-colors duration-200">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div id="customerDetailsContent" class="space-y-6">
+                    <!-- Content will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample customer data
+        const customers = [
+            {
+                id: 1,
+                firstName: 'John',
+                lastName: 'Smith',
+                dateOfBirth: '1985-03-15',
+                streetAddress: '123 Collins Street',
+                suburb: 'CBD',
+                city: 'Melbourne',
+                postCode: '3000',
+                phoneNumber: '(555) 123-4567',
+                email: 'john.smith@email.com',
+                dateAdded: 'Dec 15, 2024',
+                verificationStatus: 'Verified'
+            },
+            {
+                id: 2,
+                firstName: 'Sarah',
+                lastName: 'Johnson',
+                dateOfBirth: '1990-07-22',
+                streetAddress: '456 George Street',
+                suburb: 'The Rocks',
+                city: 'Sydney',
+                postCode: '2000',
+                phoneNumber: '(555) 987-6543',
+                email: 'sarah.j@email.com',
+                dateAdded: 'Dec 14, 2024',
+                verificationStatus: 'Pending'
+            },
+            {
+                id: 3,
+                firstName: 'Michael',
+                lastName: 'Wilson',
+                dateOfBirth: '1978-11-08',
+                streetAddress: '789 Queen Street',
+                suburb: 'South Bank',
+                city: 'Brisbane',
+                postCode: '4000',
+                phoneNumber: '(555) 456-7890',
+                email: 'm.wilson@email.com',
+                dateAdded: 'Dec 13, 2024',
+                verificationStatus: 'Verified'
+            },
+            {
+                id: 4,
+                firstName: 'Emma',
+                lastName: 'Davis',
+                dateOfBirth: '1992-05-30',
+                streetAddress: '321 Murray Street',
+                suburb: 'Northbridge',
+                city: 'Perth',
+                postCode: '6000',
+                phoneNumber: '(555) 321-0987',
+                email: 'emma.davis@email.com',
+                dateAdded: 'Dec 12, 2024',
+                verificationStatus: 'Not Verified'
+            },
+            {
+                id: 5,
+                firstName: 'Alex',
+                lastName: 'Brown',
+                dateOfBirth: '1987-09-12',
+                streetAddress: '654 King William Street',
+                suburb: 'North Adelaide',
+                city: 'Adelaide',
+                postCode: '5000',
+                phoneNumber: '(555) 654-3210',
+                email: 'alex.brown@email.com',
+                dateAdded: 'Dec 10, 2024',
+                verificationStatus: 'Pending'
+            }
+        ];
+
+        document.getElementById('customerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(this);
+            const customerData = {};
+            
+            for (let [key, value] of formData.entries()) {
+                customerData[key] = value;
+            }
+            
+            // Check if we're editing an existing customer
+            const editingId = this.getAttribute('data-editing-id');
+            
+            if (editingId) {
+                // Update existing customer
+                const customerIndex = customers.findIndex(c => c.id === parseInt(editingId));
+                if (customerIndex !== -1) {
+                    customers[customerIndex] = {
+                        ...customers[customerIndex],
+                        ...customerData
+                    };
+                    console.log('Customer Updated:', customers[customerIndex]);
+                    
+                    // Update the table display
+                    updateCustomerTable();
+                    
+                    // Show success message for update
+                    document.querySelector('#successMessage p').textContent = 'Customer information has been updated successfully.';
+                }
+                
+                // Reset form state
+                this.removeAttribute('data-editing-id');
+                document.querySelector('#formPage h1').textContent = 'Customer Information';
+                document.querySelector('#formPage p').textContent = 'Please fill out your details below';
+                document.querySelector('#customerForm button[type="submit"]').textContent = 'Submit Information';
+            } else {
+                // Add new customer
+                const newCustomer = {
+                    id: customers.length + 1,
+                    ...customerData,
+                    dateAdded: new Date().toLocaleDateString('en-US', { 
+                        year: 'numeric', 
+                        month: 'short', 
+                        day: 'numeric' 
+                    }),
+                    verificationStatus: 'Pending'
+                };
+                customers.push(newCustomer);
+                console.log('New Customer Added:', newCustomer);
+                
+                // Update the table display
+                updateCustomerTable();
+                
+                // Show success message for new customer
+                document.querySelector('#successMessage p').textContent = 'Thank you! Your information has been submitted successfully.';
+            }
+            
+            // Show success message
+            document.getElementById('successMessage').classList.remove('hidden');
+            
+            // Scroll to success message
+            document.getElementById('successMessage').scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'center' 
+            });
+            
+            // Reset form after a delay
+            setTimeout(() => {
+                this.reset();
+                document.getElementById('successMessage').classList.add('hidden');
+            }, 3000);
+        });
+
+        // Phone number formatting
+        document.getElementById('phoneNumber').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length >= 6) {
+                value = `(${value.slice(0,3)}) ${value.slice(3,6)}-${value.slice(6,10)}`;
+            } else if (value.length >= 3) {
+                value = `(${value.slice(0,3)}) ${value.slice(3)}`;
+            }
+            e.target.value = value;
+        });
+
+        // Navigation functions
+        function showDashboard() {
+            document.getElementById('formPage').classList.add('hidden');
+            document.getElementById('dashboardPage').classList.remove('hidden');
+        }
+
+        function showForm() {
+            document.getElementById('formPage').classList.remove('hidden');
+            document.getElementById('dashboardPage').classList.add('hidden');
+        }
+
+        // Update customer table display
+        function updateCustomerTable() {
+            const tableBody = document.getElementById('customerTableBody');
+            const colors = ['blue', 'green', 'purple', 'pink', 'orange', 'indigo', 'red', 'yellow'];
+            
+            tableBody.innerHTML = customers.map((customer, index) => {
+                const color = colors[index % colors.length];
+                const initials = customer.firstName.charAt(0) + customer.lastName.charAt(0);
+                
+                let statusClass = '';
+                if (customer.verificationStatus === 'Verified') {
+                    statusClass = 'bg-green-100 text-green-800';
+                } else if (customer.verificationStatus === 'Pending') {
+                    statusClass = 'bg-yellow-100 text-yellow-800';
+                } else {
+                    statusClass = 'bg-red-100 text-red-800';
+                }
+                
+                return `
+                    <tr class="border-b border-gray-100 hover:bg-white transition-colors duration-150">
+                        <td class="py-4 px-4">
+                            <div class="flex items-center">
+                                <div class="w-8 h-8 bg-${color}-500 rounded-full flex items-center justify-center text-white font-medium text-sm mr-3">
+                                    ${initials}
+                                </div>
+                                <span class="font-medium text-gray-900">${customer.firstName} ${customer.lastName}</span>
+                            </div>
+                        </td>
+                        <td class="py-4 px-4 text-gray-600">${customer.city}</td>
+                        <td class="py-4 px-4">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusClass}">
+                                ${customer.verificationStatus}
+                            </span>
+                        </td>
+                        <td class="py-4 px-4 text-gray-600">${customer.dateAdded}</td>
+                        <td class="py-4 px-4">
+                            <button onclick="viewCustomerDetails(${customer.id})" 
+                                    class="text-blue-600 hover:text-blue-800 font-medium text-sm">
+                                View Details
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Document upload function
+        function uploadDocument() {
+            const fileInput = document.getElementById('documentUpload');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                alert('Please select a file to upload.');
+                return;
+            }
+            
+            // Check file size (10MB limit)
+            if (file.size > 10 * 1024 * 1024) {
+                alert('File size must be less than 10MB.');
+                return;
+            }
+            
+            // In a real application, you would upload the file to your server
+            console.log('Uploading file:', file.name);
+            
+            // Simulate successful upload
+            alert(`Document "${file.name}" uploaded successfully!`);
+            
+            // Clear the file input
+            fileInput.value = '';
+        }
+
+        // Customer details functions
+        function viewCustomerDetails(customerId) {
+            const customer = customers.find(c => c.id === customerId);
+            if (!customer) return;
+
+            const content = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-gray-800 border-b border-gray-200 pb-2">Personal Information</h3>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-600">Full Name</label>
+                            <p class="text-gray-900 font-medium">${customer.firstName} ${customer.lastName}</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-600">Date of Birth</label>
+                            <p class="text-gray-900">${new Date(customer.dateOfBirth).toLocaleDateString('en-AU', { 
+                                year: 'numeric', 
+                                month: 'long', 
+                                day: 'numeric' 
+                            })}</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-600">Date Added</label>
+                            <p class="text-gray-900">${customer.dateAdded}</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-gray-800 border-b border-gray-200 pb-2">Contact Information</h3>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-600">Email Address</label>
+                            <p class="text-gray-900">${customer.email}</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-600">Phone Number</label>
+                            <p class="text-gray-900">${customer.phoneNumber}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-6">
+                    <h3 class="text-lg font-semibold text-gray-800 border-b border-gray-200 pb-2 mb-4">Address Information</h3>
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <p class="text-gray-900 font-medium">${customer.streetAddress}</p>
+                        ${customer.suburb ? `<p class="text-gray-700">${customer.suburb}</p>` : ''}
+                        <p class="text-gray-700">${customer.city} ${customer.postCode}</p>
+                    </div>
+                </div>
+
+                <div class="mt-6">
+                    <h3 class="text-lg font-semibold text-gray-800 border-b border-gray-200 pb-2 mb-4">Documents</h3>
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <div class="mb-4">
+                            <label for="documentUpload" class="block text-sm font-medium text-gray-700 mb-2">Upload Document</label>
+                            <div class="flex items-center space-x-3">
+                                <input type="file" id="documentUpload" name="documentUpload" 
+                                       accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" 
+                                       class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                                <button onclick="uploadDocument()" 
+                                        class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200 text-sm">
+                                    Upload
+                                </button>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">Accepted formats: PDF, DOC, DOCX, JPG, PNG (Max 10MB)</p>
+                        </div>
+                        
+                        <div id="uploadedDocuments">
+                            <h4 class="text-sm font-medium text-gray-700 mb-2">Uploaded Documents:</h4>
+                            <div class="space-y-2">
+                                <div class="flex items-center justify-between bg-white p-3 rounded border">
+                                    <div class="flex items-center">
+                                        <svg class="w-5 h-5 text-red-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                                        </svg>
+                                        <span class="text-sm text-gray-700">ID_Document.pdf</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-xs text-gray-500">Dec 15, 2024</span>
+                                        <button class="text-blue-600 hover:text-blue-800 text-sm">View</button>
+                                        <button class="text-red-600 hover:text-red-800 text-sm">Delete</button>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between bg-white p-3 rounded border">
+                                    <div class="flex items-center">
+                                        <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                        </svg>
+                                        <span class="text-sm text-gray-700">Proof_of_Address.jpg</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-xs text-gray-500">Dec 14, 2024</span>
+                                        <button class="text-blue-600 hover:text-blue-800 text-sm">View</button>
+                                        <button class="text-red-600 hover:text-red-800 text-sm">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-6 flex justify-end space-x-3">
+                    <button onclick="closeCustomerModal()" 
+                            class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition-colors duration-200">
+                        Close
+                    </button>
+                    <button onclick="editCustomer(${customer.id})" 
+                            class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200">
+                        Edit Customer
+                    </button>
+                </div>
+            `;
+
+            document.getElementById('customerDetailsContent').innerHTML = content;
+            document.getElementById('customerModal').classList.remove('hidden');
+        }
+
+        function closeCustomerModal() {
+            document.getElementById('customerModal').classList.add('hidden');
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('customerModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeCustomerModal();
+            }
+        });
+
+        // Edit customer function
+        function editCustomer(customerId) {
+            const customer = customers.find(c => c.id === customerId);
+            if (!customer) return;
+
+            // Close the details modal
+            closeCustomerModal();
+            
+            // Show the form page
+            showForm();
+            
+            // Populate the form with customer data
+            document.getElementById('firstName').value = customer.firstName;
+            document.getElementById('lastName').value = customer.lastName;
+            document.getElementById('dateOfBirth').value = customer.dateOfBirth;
+            document.getElementById('streetAddress').value = customer.streetAddress;
+            document.getElementById('suburb').value = customer.suburb || '';
+            document.getElementById('city').value = customer.city;
+            document.getElementById('postCode').value = customer.postCode;
+            document.getElementById('phoneNumber').value = customer.phoneNumber;
+            document.getElementById('email').value = customer.email;
+            
+            // Change the form title and button text to indicate editing
+            document.querySelector('#formPage h1').textContent = 'Edit Customer Information';
+            document.querySelector('#formPage p').textContent = 'Update the customer details below';
+            document.querySelector('#customerForm button[type="submit"]').textContent = 'Update Information';
+            
+            // Store the customer ID for updating
+            document.getElementById('customerForm').setAttribute('data-editing-id', customerId);
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97528e39512cd9b7',t:'MTc1NjIwMzE5Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
