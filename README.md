@@ -12,12 +12,7 @@ CREATE DATABASE customer_info;
 3. Start the Spring Boot API:
 ```bash
 cd api
-./mvnw spring-boot:run
-```
-
-Or on Windows:
-```bash
-mvnw.cmd spring-boot:run
+mvn spring-boot:run
 ```
 
 ## API Endpoints
