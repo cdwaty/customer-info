@@ -1,50 +1,5 @@
-const { useState } = React;
-
 const CustomerDashboard = ({ onViewDetails, onAddCustomer, customers }) => {
-  const defaultCustomers = [
-    {
-      id: 1,
-      firstName: 'John',
-      lastName: 'Smith',
-      city: 'Melbourne',
-      verificationStatus: 'Verified',
-      dateAdded: 'Dec 15, 2024'
-    },
-    {
-      id: 2,
-      firstName: 'Sarah',
-      lastName: 'Johnson',
-      city: 'Sydney',
-      verificationStatus: 'Pending',
-      dateAdded: 'Dec 14, 2024'
-    },
-    {
-      id: 3,
-      firstName: 'Michael',
-      lastName: 'Wilson',
-      city: 'Brisbane',
-      verificationStatus: 'Verified',
-      dateAdded: 'Dec 13, 2024'
-    },
-    {
-      id: 4,
-      firstName: 'Emma',
-      lastName: 'Davis',
-      city: 'Perth',
-      verificationStatus: 'Not Verified',
-      dateAdded: 'Dec 12, 2024'
-    },
-    {
-      id: 5,
-      firstName: 'Alex',
-      lastName: 'Brown',
-      city: 'Adelaide',
-      verificationStatus: 'Pending',
-      dateAdded: 'Dec 10, 2024'
-    }
-  ];
-
-  const customerList = customers || defaultCustomers;
+  const customerList = customers || [];
 
   const getStatusClass = (status) => {
     if (status === 'Verified') return 'bg-green-100 text-green-800';
@@ -80,48 +35,60 @@ const CustomerDashboard = ({ onViewDetails, onAddCustomer, customers }) => {
 
           <div className="bg-gray-50 rounded-lg p-6">
             <h2 className="text-xl font-semibold text-gray-800 mb-4">Customer List</h2>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-gray-200">
-                    <th className="text-left py-3 px-4 font-medium text-gray-700">Name</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-700">City/Town</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-700">Verification Status</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-700">Date Added</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-700">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {customerList.map((customer, index) => (
-                    <tr key={customer.id} className="border-b border-gray-100 hover:bg-white transition-colors duration-150">
-                      <td className="py-4 px-4">
-                        <div className="flex items-center">
-                          <div className={`w-8 h-8 bg-${colors[index % colors.length]}-500 rounded-full flex items-center justify-center text-white font-medium text-sm mr-3`}>
-                            {getInitials(customer.firstName, customer.lastName)}
-                          </div>
-                          <span className="font-medium text-gray-900">{customer.firstName} {customer.lastName}</span>
-                        </div>
-                      </td>
-                      <td className="py-4 px-4 text-gray-600">{customer.city}</td>
-                      <td className="py-4 px-4">
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusClass(customer.verificationStatus)}`}>
-                          {customer.verificationStatus}
-                        </span>
-                      </td>
-                      <td className="py-4 px-4 text-gray-600">{customer.dateAdded}</td>
-                      <td className="py-4 px-4">
-                        <button
-                          onClick={() => onViewDetails(customer.id)}
-                          className="text-blue-600 hover:text-blue-800 font-medium text-sm"
-                        >
-                          View Details
-                        </button>
-                      </td>
+            {customerList.length === 0 ? (
+              <div className="text-center py-8">
+                <p className="text-gray-500">No customers found. Add your first customer to get started.</p>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-gray-200">
+                      <th className="text-left py-3 px-4 font-medium text-gray-700">Name</th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-700">City/Town</th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-700">Status</th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-700">Date Added</th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-700">Actions</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {customerList.map((customer, index) => (
+                      <tr key={customer.id} className="border-b border-gray-100 hover:bg-white transition-colors duration-150">
+                        <td className="py-4 px-4">
+                          <div className="flex items-center">
+                            <div className={`w-8 h-8 bg-${colors[index % colors.length]}-500 rounded-full flex items-center justify-center text-white font-medium text-sm mr-3`}>
+                              {getInitials(customer.firstName, customer.lastName)}
+                            </div>
+                            <span className="font-medium text-gray-900">{customer.firstName} {customer.lastName}</span>
+                          </div>
+                        </td>
+                        <td className="py-4 px-4 text-gray-600">{customer.city}</td>
+                        <td className="py-4 px-4">
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                            Active
+                          </span>
+                        </td>
+                        <td className="py-4 px-4 text-gray-600">
+                          {new Date(customer.createdAt).toLocaleDateString('en-US', { 
+                            year: 'numeric', 
+                            month: 'short', 
+                            day: 'numeric' 
+                          })}
+                        </td>
+                        <td className="py-4 px-4">
+                          <button
+                            onClick={() => onViewDetails(customer.id)}
+                            className="text-blue-600 hover:text-blue-800 font-medium text-sm"
+                          >
+                            View Details
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
         </div>
       </div>

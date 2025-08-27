@@ -1,25 +1,13 @@
 const { useState } = React;
 
 const CustomerDetails = ({ customerId, onClose, onEdit, customers }) => {
-  const defaultCustomers = [
-    {
-      id: 1,
-      firstName: 'John',
-      lastName: 'Smith',
-      dateOfBirth: '1985-03-15',
-      streetAddress: '123 Collins Street',
-      suburb: 'CBD',
-      city: 'Melbourne',
-      postCode: '3000',
-      phoneNumber: '(555) 123-4567',
-      email: 'john.smith@email.com',
-      dateAdded: 'Dec 15, 2024',
-      verificationStatus: 'Verified'
-    }
-  ];
-
-  const customerList = customers || defaultCustomers;
-  const customer = customerList.find(c => c.id === customerId) || customerList[0];
+  const customer = customers.find(c => c.id === customerId);
+  
+  if (!customer) {
+    return React.createElement('div', { className: 'flex justify-center items-center min-h-screen' },
+      React.createElement('div', { className: 'text-red-600' }, 'Customer not found')
+    );
+  }
 
   const uploadDocument = () => {
     const fileInput = document.getElementById('documentUpload');
@@ -74,7 +62,11 @@ const CustomerDetails = ({ customerId, onClose, onEdit, customers }) => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-600">Date Added</label>
-                  <p className="text-gray-900">{customer.dateAdded}</p>
+                  <p className="text-gray-900">{new Date(customer.createdAt).toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'short', 
+                    day: 'numeric' 
+                  })}</p>
                 </div>
               </div>
 
