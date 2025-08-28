@@ -1,12 +1,30 @@
 const { useState } = React;
 
-const { useState } = React;
+const { useState, useEffect } = React;
 
 const CustomerDetails = ({ customerId, onClose, onEdit, customers }) => {
   const [uploadedDocuments, setUploadedDocuments] = useState([]);
   const [uploading, setUploading] = useState(false);
+  const [loading, setLoading] = useState(true);
   
   const customer = customers.find(c => c.id === customerId);
+  
+  const loadDocuments = async () => {
+    try {
+      const documents = await customerAPI.getCustomerDocuments(customerId);
+      setUploadedDocuments(documents);
+    } catch (error) {
+      console.error('Error loading documents:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (customerId) {
+      loadDocuments();
+    }
+  }, [customerId]);
   
   if (!customer) {
     return React.createElement('div', { className: 'flex justify-center items-center min-h-screen' },
@@ -34,19 +52,18 @@ const CustomerDetails = ({ customerId, onClose, onEdit, customers }) => {
       const result = await uploadToS3(file, customerId);
       
       if (result.success) {
-        const newDocument = {
-          id: Date.now(),
+        // Save metadata to PostgreSQL
+        const documentMetadata = {
           fileName: result.fileName,
           s3Key: result.key,
-          uploadDate: new Date().toLocaleDateString('en-US', { 
-            year: 'numeric', 
-            month: 'short', 
-            day: 'numeric' 
-          })
+          fileSize: file.size,
+          contentType: file.type
         };
         
-        setUploadedDocuments(prev => [...prev, newDocument]);
-        alert(`Document "${file.name}" uploaded successfully to S3!`);
+        const savedDoc = await customerAPI.saveDocumentMetadata(customerId, documentMetadata);
+        await loadDocuments(); // Reload documents from database
+        
+        alert(`Document "${file.name}" uploaded successfully!`);
         fileInput.value = '';
       } else {
         alert(`Upload failed: ${result.error}`);
@@ -153,7 +170,11 @@ const CustomerDetails = ({ customerId, onClose, onEdit, customers }) => {
                 
                 <div>
                   <h4 className="text-sm font-medium text-gray-700 mb-2">Uploaded Documents:</h4>
-                  {uploadedDocuments.length === 0 ? (
+                  {loading ? (
+                    <div className="text-center py-4">
+                      <p className="text-gray-500 text-sm">Loading documents...</p>
+                    </div>
+                  ) : uploadedDocuments.length === 0 ? (
                     <div className="text-center py-4">
                       <p className="text-gray-500 text-sm">No documents uploaded yet.</p>
                     </div>
@@ -168,7 +189,13 @@ const CustomerDetails = ({ customerId, onClose, onEdit, customers }) => {
                             <span className="text-sm text-gray-700">{doc.fileName}</span>
                           </div>
                           <div className="flex items-center space-x-2">
-                            <span className="text-xs text-gray-500">{doc.uploadDate}</span>
+                            <span className="text-xs text-gray-500">
+                              {new Date(doc.uploadedAt).toLocaleDateString('en-US', { 
+                                year: 'numeric', 
+                                month: 'short', 
+                                day: 'numeric' 
+                              })}
+                            </span>
                             <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">S3</span>
                           </div>
                         </div>

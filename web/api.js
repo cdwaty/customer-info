@@ -44,6 +44,33 @@ const api = {
     });
     if (!response.ok) throw new Error('Failed to delete customer');
     return response.json();
+  },
+
+  // Get customer documents
+  getCustomerDocuments: async (customerId) => {
+    const response = await fetch(`${API_BASE_URL}/customers/${customerId}/documents`);
+    if (!response.ok) throw new Error('Failed to fetch documents');
+    return response.json();
+  },
+
+  // Save document metadata
+  saveDocumentMetadata: async (customerId, documentData) => {
+    const response = await fetch(`${API_BASE_URL}/customers/${customerId}/documents`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(documentData)
+    });
+    if (!response.ok) throw new Error('Failed to save document metadata');
+    return response.json();
+  },
+
+  // Delete document
+  deleteDocument: async (customerId, documentId) => {
+    const response = await fetch(`${API_BASE_URL}/customers/${customerId}/documents/${documentId}`, {
+      method: 'DELETE'
+    });
+    if (!response.ok) throw new Error('Failed to delete document');
+    return response.json();
   }
 };
 
