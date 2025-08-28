@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: Customer Information API
   version: 1.0.0
-  description: REST API for managing customer information
+  description: REST API for managing customer information and documents
 servers:
   - url: http://localhost:3001
     description: Development server
@@ -96,6 +96,70 @@ paths:
         '404':
           description: Customer not found
 
+  /api/customers/{customerId}/documents:
+    get:
+      summary: Get customer documents
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: List of customer documents
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Document'
+    post:
+      summary: Save document metadata
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DocumentRequest'
+      responses:
+        '200':
+          description: Document metadata saved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Document'
+
+  /api/customers/{customerId}/documents/{documentId}:
+    delete:
+      summary: Delete document
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: documentId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Document deleted
+        '404':
+          description: Document not found
+
 components:
   schemas:
     Customer:
@@ -163,3 +227,41 @@ components:
         email:
           type: string
           format: email
+    
+    Document:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        customerId:
+          type: integer
+          format: int64
+        fileName:
+          type: string
+        s3Key:
+          type: string
+        fileSize:
+          type: integer
+          format: int64
+        contentType:
+          type: string
+        uploadedAt:
+          type: string
+          format: date-time
+    
+    DocumentRequest:
+      type: object
+      required:
+        - fileName
+        - s3Key
+      properties:
+        fileName:
+          type: string
+        s3Key:
+          type: string
+        fileSize:
+          type: integer
+          format: int64
+        contentType:
+          type: string
