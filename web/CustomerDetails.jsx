@@ -1,6 +1,11 @@
 const { useState } = React;
 
+const { useState } = React;
+
 const CustomerDetails = ({ customerId, onClose, onEdit, customers }) => {
+  const [uploadedDocuments, setUploadedDocuments] = useState([]);
+  const [uploading, setUploading] = useState(false);
+  
   const customer = customers.find(c => c.id === customerId);
   
   if (!customer) {
@@ -9,7 +14,7 @@ const CustomerDetails = ({ customerId, onClose, onEdit, customers }) => {
     );
   }
 
-  const uploadDocument = () => {
+  const uploadDocument = async () => {
     const fileInput = document.getElementById('documentUpload');
     const file = fileInput.files[0];
     
@@ -23,9 +28,35 @@ const CustomerDetails = ({ customerId, onClose, onEdit, customers }) => {
       return;
     }
     
-    console.log('Uploading file:', file.name);
-    alert(`Document "${file.name}" uploaded successfully!`);
-    fileInput.value = '';
+    setUploading(true);
+    
+    try {
+      const result = await uploadToS3(file, customerId);
+      
+      if (result.success) {
+        const newDocument = {
+          id: Date.now(),
+          fileName: result.fileName,
+          s3Key: result.key,
+          uploadDate: new Date().toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'short', 
+            day: 'numeric' 
+          })
+        };
+        
+        setUploadedDocuments(prev => [...prev, newDocument]);
+        alert(`Document "${file.name}" uploaded successfully to S3!`);
+        fileInput.value = '';
+      } else {
+        alert(`Upload failed: ${result.error}`);
+      }
+    } catch (error) {
+      console.error('Upload error:', error);
+      alert('Upload failed. Please try again.');
+    } finally {
+      setUploading(false);
+    }
   };
 
   return (
@@ -107,9 +138,14 @@ const CustomerDetails = ({ customerId, onClose, onEdit, customers }) => {
                     />
                     <button
                       onClick={uploadDocument}
-                      className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200 text-sm"
+                      disabled={uploading}
+                      className={`px-4 py-2 font-medium rounded-lg transition-colors duration-200 text-sm ${
+                        uploading 
+                          ? 'bg-gray-400 cursor-not-allowed text-white' 
+                          : 'bg-blue-600 hover:bg-blue-700 text-white'
+                      }`}
                     >
-                      Upload
+                      {uploading ? 'Uploading...' : 'Upload'}
                     </button>
                   </div>
                   <p className="text-xs text-gray-500 mt-1">Accepted formats: PDF, DOC, DOCX, JPG, PNG (Max 10MB)</p>
@@ -117,9 +153,28 @@ const CustomerDetails = ({ customerId, onClose, onEdit, customers }) => {
                 
                 <div>
                   <h4 className="text-sm font-medium text-gray-700 mb-2">Uploaded Documents:</h4>
-                  <div className="text-center py-4">
-                    <p className="text-gray-500 text-sm">No documents uploaded yet.</p>
-                  </div>
+                  {uploadedDocuments.length === 0 ? (
+                    <div className="text-center py-4">
+                      <p className="text-gray-500 text-sm">No documents uploaded yet.</p>
+                    </div>
+                  ) : (
+                    <div className="space-y-2">
+                      {uploadedDocuments.map((doc) => (
+                        <div key={doc.id} className="flex items-center justify-between bg-white p-3 rounded border">
+                          <div className="flex items-center">
+                            <svg className="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                            </svg>
+                            <span className="text-sm text-gray-700">{doc.fileName}</span>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <span className="text-xs text-gray-500">{doc.uploadDate}</span>
+                            <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">S3</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
