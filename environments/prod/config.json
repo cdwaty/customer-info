@@ -1,8 +1,4 @@
 {
   "environment": "production",
-  "apiBaseUrl": "https://api.yourcompany.com/api",
-  "s3Config": {
-    "bucketName": "customer-documents-prod",
-    "region": "us-east-1"
-  }
+  "apiBaseUrl": "https://api.yourcompany.com/api"
 }
