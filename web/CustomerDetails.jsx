@@ -49,25 +49,11 @@ const CustomerDetails = ({ customerId, onClose, onEdit, customers }) => {
     setUploading(true);
     
     try {
-      const result = await uploadToS3(file, customerId);
+      const savedDoc = await customerAPI.uploadFile(customerId, file);
+      await loadDocuments(); // Reload documents from database
       
-      if (result.success) {
-        // Save metadata to PostgreSQL
-        const documentMetadata = {
-          fileName: result.fileName,
-          s3Key: result.key,
-          fileSize: file.size,
-          contentType: file.type
-        };
-        
-        const savedDoc = await customerAPI.saveDocumentMetadata(customerId, documentMetadata);
-        await loadDocuments(); // Reload documents from database
-        
-        alert(`Document "${file.name}" uploaded successfully!`);
-        fileInput.value = '';
-      } else {
-        alert(`Upload failed: ${result.error}`);
-      }
+      alert(`Document "${file.name}" uploaded successfully!`);
+      fileInput.value = '';
     } catch (error) {
       console.error('Upload error:', error);
       alert('Upload failed. Please try again.');

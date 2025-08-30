@@ -71,6 +71,19 @@ const api = {
     });
     if (!response.ok) throw new Error('Failed to delete document');
     return response.json();
+  },
+
+  // Upload file
+  uploadFile: async (customerId, file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    
+    const response = await fetch(`${API_BASE_URL}/customers/${customerId}/upload`, {
+      method: 'POST',
+      body: formData
+    });
+    if (!response.ok) throw new Error('Failed to upload file');
+    return response.json();
   }
 };
 
