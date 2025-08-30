@@ -3,6 +3,8 @@
   "apiBaseUrl": "http://localhost:3001/api",
   "s3Config": {
     "bucketName": "customer-documents-dev",
-    "region": "us-east-1"
+    "region": "us-east-1",
+    "accessKeyId": "YOUR_DEV_ACCESS_KEY",
+    "secretAccessKey": "YOUR_DEV_SECRET_KEY"
   }
 }

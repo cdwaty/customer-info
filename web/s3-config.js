@@ -4,13 +4,18 @@ const S3_CONFIG = window.APP_CONFIG.s3Config;
 // Initialize AWS S3 - Use IAM roles or temporary credentials in production
 // For development only - replace with proper authentication
 if (window.APP_CONFIG.environment === 'development') {
-  AWS.config.update({
-    accessKeyId: 'YOUR_DEV_ACCESS_KEY', // Use environment variables
-    secretAccessKey: 'YOUR_DEV_SECRET_KEY', // Use environment variables
-    region: S3_CONFIG.region
-  });
+  if (S3_CONFIG.accessKeyId && S3_CONFIG.secretAccessKey) {
+    console.warn('⚠️  Using AWS credentials in browser - DEVELOPMENT ONLY!');
+    AWS.config.update({
+      accessKeyId: S3_CONFIG.accessKeyId,
+      secretAccessKey: S3_CONFIG.secretAccessKey,
+      region: S3_CONFIG.region
+    });
+  } else {
+    console.error('AWS credentials not configured for development');
+  }
 } else {
-  // Production should use IAM roles, STS tokens, or Cognito
+  // Production should use STS temporary credentials
   console.warn('Production S3 authentication not configured');
 }
 
