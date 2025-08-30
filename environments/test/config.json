@@ -1,0 +1,8 @@
+{
+  "environment": "test",
+  "apiBaseUrl": "https://test-api.yourcompany.com/api",
+  "s3Config": {
+    "bucketName": "customer-documents-test",
+    "region": "us-east-1"
+  }
+}

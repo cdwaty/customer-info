@@ -1,17 +1,18 @@
-// S3 Configuration
-const S3_CONFIG = {
-  bucketName: 'customer-documents-bucket', // Replace with your bucket name
-  region: 'us-east-1', // Replace with your AWS region
-  accessKeyId: 'YOUR_ACCESS_KEY_ID', // Replace with your access key
-  secretAccessKey: 'YOUR_SECRET_ACCESS_KEY' // Replace with your secret key
-};
+// S3 Configuration from centralized config
+const S3_CONFIG = window.APP_CONFIG.s3Config;
 
-// Initialize AWS S3
-AWS.config.update({
-  accessKeyId: S3_CONFIG.accessKeyId,
-  secretAccessKey: S3_CONFIG.secretAccessKey,
-  region: S3_CONFIG.region
-});
+// Initialize AWS S3 - Use IAM roles or temporary credentials in production
+// For development only - replace with proper authentication
+if (window.APP_CONFIG.environment === 'development') {
+  AWS.config.update({
+    accessKeyId: 'YOUR_DEV_ACCESS_KEY', // Use environment variables
+    secretAccessKey: 'YOUR_DEV_SECRET_KEY', // Use environment variables
+    region: S3_CONFIG.region
+  });
+} else {
+  // Production should use IAM roles, STS tokens, or Cognito
+  console.warn('Production S3 authentication not configured');
+}
 
 const s3 = new AWS.S3();
 

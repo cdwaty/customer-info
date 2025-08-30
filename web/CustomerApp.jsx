@@ -100,7 +100,13 @@ const CustomerApp = () => {
   });
 };
 
-// Render the main app
-const { createRoot } = ReactDOM;
-const root = createRoot(document.getElementById('root'));
-root.render(React.createElement(CustomerApp));
+// Initialize app with config
+const initApp = async () => {
+  await window.initializeApp();
+  const { createRoot } = ReactDOM;
+  const root = createRoot(document.getElementById('root'));
+  root.render(React.createElement(CustomerApp));
+};
+
+// Start the app
+initApp();
