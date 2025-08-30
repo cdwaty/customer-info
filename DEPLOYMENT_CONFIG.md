@@ -2,54 +2,44 @@
 
 ## Environment Configuration
 
-### 1. JSON-Based Config (`config.json`)
+### 1. Frontend Config (`config.json`)
 - **Runtime configuration loading** from JSON file
 - **No hardcoded environment logic** in JavaScript
 - **Ops teams can swap configs** without touching code
-- **Environment-specific configurations**
+- **Contains only API URL and environment name**
 
-### 2. Security Best Practices
+### 2. Backend Config (Spring Boot)
+- **AWS S3 configuration** in `application.properties`
+- **Database configuration** per environment
+- **Environment variables** for sensitive data
 
-#### Development
-```javascript
-// Use local credentials (not in source control)
-accessKeyId: process.env.AWS_ACCESS_KEY_ID
-secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+## Configuration Files
+
+### Frontend Configuration
+```json
+{
+  "environment": "development",
+  "apiBaseUrl": "http://localhost:3001/api"
+}
 ```
 
-#### Production
-```javascript
-// Use IAM roles, STS tokens, or AWS Cognito
-AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-  IdentityPoolId: 'your-identity-pool-id'
-});
-```
-
-### 3. Environment Variables
-
-#### For Web App (build time)
-```bash
-# .env.development
-REACT_APP_API_URL=http://localhost:3001/api
-REACT_APP_S3_BUCKET=customer-documents-dev
-
-# .env.production  
-REACT_APP_API_URL=https://api.yourcompany.com/api
-REACT_APP_S3_BUCKET=customer-documents-prod
-```
-
-#### For Spring Boot API
+### Backend Configuration
 ```properties
-# application-dev.properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/customer_info_dev
+# Database
+spring.datasource.url=jdbc:postgresql://localhost:5432/customer_info
+spring.datasource.username=customer_user
+spring.datasource.password=${DB_PASSWORD}
 
-# application-prod.properties
-spring.datasource.url=jdbc:postgresql://prod-db:5432/customer_info_prod
+# AWS S3
+aws.s3.bucket-name=customer-documents-dev
+aws.region=us-east-1
+aws.access-key-id=${AWS_ACCESS_KEY_ID}
+aws.secret-access-key=${AWS_SECRET_ACCESS_KEY}
 ```
 
-### 4. Deployment Process
+## Deployment Process
 
-#### For each environment, ops teams copy the appropriate config:
+### Frontend Deployment
 ```bash
 # Development
 cp environments/dev/config.json web/config.json
@@ -61,7 +51,40 @@ cp environments/test/config.json web/config.json
 cp environments/prod/config.json web/config.json
 ```
 
-#### Directory Structure:
+### Backend Deployment
+Set environment variables:
+```bash
+# Database
+export DB_PASSWORD=your-db-password
+
+# AWS (Development/Test)
+export AWS_ACCESS_KEY_ID=your-access-key
+export AWS_SECRET_ACCESS_KEY=your-secret-key
+
+# Production: Use IAM roles instead of access keys
+```
+
+## Environment-Specific Settings
+
+### Development
+- **Frontend**: `http://localhost:3001/api`
+- **Backend**: Local PostgreSQL, S3 dev bucket
+- **AWS**: Access keys via environment variables
+
+### Production
+- **Frontend**: `https://api.yourcompany.com/api`
+- **Backend**: Production PostgreSQL, S3 prod bucket
+- **AWS**: IAM roles (no access keys needed)
+
+## Security Best Practices
+- ✅ **No AWS credentials** in frontend code
+- ✅ **Environment variables** for sensitive backend data
+- ✅ **IAM roles** in production environments
+- ✅ **Separate S3 buckets** per environment
+- ✅ **HTTPS** in production
+- ✅ **Database credentials** via environment variables
+
+## Directory Structure
 ```
 environments/
 ├── dev/config.json
@@ -69,11 +92,8 @@ environments/
 └── prod/config.json
 web/
 └── config.json (copied by ops)
+api/src/main/resources/
+├── application.properties
+├── application-dev.properties
+└── application-prod.properties
 ```
-
-### 5. Security Notes
-- **Never commit credentials** to source control
-- **Use IAM roles** in AWS environments
-- **Use environment variables** for sensitive data
-- **Implement proper CORS** policies
-- **Use HTTPS** in production
