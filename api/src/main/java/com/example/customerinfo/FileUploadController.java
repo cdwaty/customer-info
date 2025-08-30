@@ -20,7 +20,8 @@ public class FileUploadController {
     @Value("${aws.s3.bucket-name}")
     private String bucketName;
     
-    private final S3Client s3Client = S3Client.create();
+    @Autowired
+    private S3Client s3Client;
     
     @PostMapping
     public ResponseEntity<Document> uploadFile(@PathVariable Long customerId, 
