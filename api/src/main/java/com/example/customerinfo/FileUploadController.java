@@ -27,7 +27,7 @@ public class FileUploadController {
     public ResponseEntity<Document> uploadFile(@PathVariable Long customerId, 
                                              @RequestParam("file") MultipartFile file) {
         try {
-            String fileName = "customer-" + customerId + "/" + System.currentTimeMillis() + "-" + file.getOriginalFilename();
+            String fileName = customerId + "_" + file.getOriginalFilename() + "_" + System.currentTimeMillis();
             
             // Upload to S3
             PutObjectRequest putRequest = PutObjectRequest.builder()
