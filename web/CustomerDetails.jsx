@@ -1,5 +1,3 @@
-const { useState } = React;
-
 const { useState, useEffect } = React;
 
 const CustomerDetails = ({ customerId, onClose, onEdit, customers }) => {
