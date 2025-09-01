@@ -9,11 +9,7 @@ const loadConfig = async () => {
     // Fallback config
     return {
       environment: 'development',
-      apiBaseUrl: 'http://localhost:3001/api',
-      s3Config: {
-        bucketName: 'customer-documents-dev',
-        region: 'us-east-1'
-      }
+      apiBaseUrl: 'http://localhost:3001/api'
     };
   }
 };

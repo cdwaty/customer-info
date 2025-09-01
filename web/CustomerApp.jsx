@@ -102,7 +102,9 @@ const CustomerApp = () => {
 
 // Initialize app with config
 const initApp = async () => {
-  await window.initializeApp();
+  if (window.initializeApp) {
+    await window.initializeApp();
+  }
   const { createRoot } = ReactDOM;
   const root = createRoot(document.getElementById('root'));
   root.render(React.createElement(CustomerApp));
