@@ -1,5 +1,6 @@
 package com.example.customerinfo;
 
+import com.example.customerinfo.model.Customer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

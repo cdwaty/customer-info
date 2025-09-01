@@ -1,4 +1,4 @@
-package com.example.customerinfo;
+package com.example.customerinfo.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;

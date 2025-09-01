@@ -1,5 +1,7 @@
-package com.example.customerinfo;
+package com.example.customerinfo.controller;
 
+import com.example.customerinfo.model.Customer;
+import com.example.customerinfo.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

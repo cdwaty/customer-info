@@ -1,5 +1,8 @@
 package com.example.customerinfo;
 
+import com.example.customerinfo.controller.CustomerController;
+import com.example.customerinfo.model.Customer;
+import com.example.customerinfo.repository.CustomerRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

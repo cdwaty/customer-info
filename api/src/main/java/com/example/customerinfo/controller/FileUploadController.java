@@ -1,5 +1,7 @@
-package com.example.customerinfo;
+package com.example.customerinfo.controller;
 
+import com.example.customerinfo.model.Document;
+import com.example.customerinfo.repository.DocumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +26,8 @@ public class FileUploadController {
     private S3Client s3Client;
     
     @PostMapping
-    public ResponseEntity<Document> uploadFile(@PathVariable Long customerId, 
-                                             @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<Document> uploadFile(@PathVariable Long customerId,
+                                               @RequestParam("file") MultipartFile file) {
         try {
             String fileName = customerId + "_" + file.getOriginalFilename() + "_" + System.currentTimeMillis();
             
