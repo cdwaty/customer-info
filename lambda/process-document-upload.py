@@ -5,6 +5,7 @@ import os
 
 s3 = boto3.client('s3')
 textract = boto3.client('textract')
+bedrock = boto3.client('bedrock-runtime')
 
 def lambda_handler(event, context):
     # 1. Get S3 bucket and object key (filename) from event
@@ -34,6 +35,11 @@ def lambda_handler(event, context):
     # 4. Connect to PostgreSQL RDS and get customer data
     customer_data = get_customer_data(key)
     print("Customer data:", customer_data)
+
+    # 5. Verify customer data matches extracted text using Bedrock
+    if customer_data:
+        verification_result = verify_customer_match(customer_data, extracted_lines)
+        print("Verification result:", verification_result)
 
     return {
         'statusCode': 200,
@@ -73,4 +79,57 @@ def get_customer_data(s3_key):
     
     print("No customer data found or insufficient columns")
     return None
+
+def verify_customer_match(customer_data, extracted_lines):
+    print("=== BEDROCK CALL DEBUG ===")
+    print(f"Customer data for LLM: {customer_data}")
+    print(f"Extracted lines for LLM: {extracted_lines}")
+    
+    prompt = f"""Compare the customer information with the extracted text from a proof of address document.
+
+Customer Data:
+Name: {customer_data.get('first_name', '')} {customer_data.get('last_name', '')}
+Address: {customer_data.get('street_address', '')} {customer_data.get('suburb', '')} {customer_data.get('city', '')} {customer_data.get('post_code', '')}
+
+Extracted Text from Document:
+{' '.join(extracted_lines)}
+
+Does the customer name and address appear in the extracted text?
+Note that the first name might be abbreviated to an initial, and the address might have minor variations (like "St" vs "Street").
+Respond only with one of the following results:
+1. 'MATCH' if both name and address are found
+2. 'NAME_MATCH' if only the name is found
+3. 'ADDRESS_MATCH' if only the address is found
+4. 'NO_MATCH' if neither name nor address is found
+5. 'UNCERTAIN' if the match is uncertain
+
+Respond with only one of the above options, no additional text, with the exception of 'UNCERTAIN' where you may add a brief explanation."""
+
+
+    print(f"Prompt being sent to Bedrock: {prompt}")
+    
+    try:
+        print("Calling Bedrock invoke_model...")
+        response = bedrock.invoke_model(
+            modelId='us.anthropic.claude-3-5-haiku-20241022-v1:0',
+            body=json.dumps({
+                'anthropic_version': 'bedrock-2023-05-31',
+                'max_tokens': 100,
+                'messages': [{'role': 'user', 'content': prompt}]
+            }) 
+        )
+        print("Bedrock call successful!")
+        print(f"Response status: {response.get('ResponseMetadata', {}).get('HTTPStatusCode')}")
+        
+        result = json.loads(response['body'].read())
+        print(f"Bedrock response: {result}")
+        
+        final_result = result['content'][0]['text'].strip()
+        print(f"Final verification result: {final_result}")
+        return final_result
+        
+    except Exception as e:
+        print(f"ERROR calling Bedrock: {str(e)}")
+        print(f"Error type: {type(e)}")
+        raise e
 
