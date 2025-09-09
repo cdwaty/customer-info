@@ -40,6 +40,9 @@ def lambda_handler(event, context):
     if customer_data:
         verification_result = verify_customer_match(customer_data, extracted_lines)
         print("Verification result:", verification_result)
+        
+        # 6. Save verification result to RDS documents table
+        save_verification_result(key, verification_result)
 
     return {
         'statusCode': 200,
@@ -132,4 +135,24 @@ Respond with only one of the above options, no additional text, with the excepti
         print(f"ERROR calling Bedrock: {str(e)}")
         print(f"Error type: {type(e)}")
         raise e
+
+def save_verification_result(s3_key, status):
+    conn = psycopg2.connect(
+        host=os.environ['DB_HOST'],
+        database=os.environ['DB_NAME'],
+        user=os.environ['DB_USER'],
+        password=os.environ['DB_PASSWORD'],
+        port=os.environ.get('DB_PORT', 5432)
+    )
+    
+    try:
+        with conn.cursor() as cursor:
+            cursor.execute(
+                "UPDATE documents SET status = %s WHERE s3_key = %s",
+                (status, s3_key)
+            )
+            conn.commit()
+            print(f"Updated document {s3_key} with status: {status}")
+    finally:
+        conn.close()
 
