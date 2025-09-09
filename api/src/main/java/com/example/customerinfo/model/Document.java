@@ -28,6 +28,9 @@ public class Document {
     @Column(name = "uploaded_at")
     private LocalDateTime uploadedAt = LocalDateTime.now();
     
+    @Column(name = "status")
+    private String status = "UNVERIFIED";
+    
     // Constructors
     public Document() {}
     
@@ -52,4 +55,7 @@ public class Document {
     
     public LocalDateTime getUploadedAt() { return uploadedAt; }
     public void setUploadedAt(LocalDateTime uploadedAt) { this.uploadedAt = uploadedAt; }
+    
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 }

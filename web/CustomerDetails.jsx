@@ -195,7 +195,16 @@ const CustomerDetails = ({ customerId, onClose, onEdit, customers }) => {
                                 day: 'numeric' 
                               })}
                             </span>
-                            <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">S3</span>
+                            <span className={`text-xs px-2 py-1 rounded ${
+                              doc.status === 'MATCH' ? 'bg-green-100 text-green-800' : 
+                              doc.status === 'NAME_MATCH' ? 'bg-blue-100 text-blue-800' :
+                              doc.status === 'ADDRESS_MATCH' ? 'bg-purple-100 text-purple-800' :
+                              doc.status === 'NO_MATCH' ? 'bg-red-100 text-red-800' :
+                              doc.status === 'UNCERTAIN' ? 'bg-yellow-100 text-yellow-800' :
+                              'bg-gray-100 text-gray-800'
+                            }`}>
+                              {doc.status || 'UNVERIFIED'}
+                            </span>
                             <button
                               onClick={() => deleteDocument(doc.id, doc.fileName)}
                               className="text-red-500 hover:text-red-700 transition-colors duration-200 ml-2"
