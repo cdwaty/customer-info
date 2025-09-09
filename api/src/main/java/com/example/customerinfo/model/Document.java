@@ -29,7 +29,7 @@ public class Document {
     private LocalDateTime uploadedAt = LocalDateTime.now();
     
     @Column(name = "status")
-    private String status = "UNVERIFIED";
+    private String status;
     
     // Constructors
     public Document() {}

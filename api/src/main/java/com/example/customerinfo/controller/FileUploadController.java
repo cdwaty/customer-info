@@ -47,6 +47,7 @@ public class FileUploadController {
             document.setS3Key(fileName);
             document.setFileSize(file.getSize());
             document.setContentType(file.getContentType());
+            document.setStatus("UNVERIFIED");
             
             Document savedDocument = documentRepository.save(document);
             

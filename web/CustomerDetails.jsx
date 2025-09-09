@@ -203,7 +203,7 @@ const CustomerDetails = ({ customerId, onClose, onEdit, customers }) => {
                               doc.status === 'UNCERTAIN' ? 'bg-yellow-100 text-yellow-800' :
                               'bg-gray-100 text-gray-800'
                             }`}>
-                              {doc.status || 'UNVERIFIED'}
+                              {doc.status }
                             </span>
                             <button
                               onClick={() => deleteDocument(doc.id, doc.fileName)}
