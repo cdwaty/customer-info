@@ -74,7 +74,7 @@ const api = {
       method: 'DELETE'
     });
     if (!response.ok) throw new Error('Failed to delete document');
-    return response.json();
+    return; // DELETE returns empty response
   },
 
   // Upload file
