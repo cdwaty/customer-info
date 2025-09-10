@@ -1,10 +1,10 @@
-from strands_agents import Agent
-from strands_agents.llms import BedrockLLM
+from strands import Agent
+from strands.models import BedrockModel
 from textract_tool import TextractTool
 from rds_query_tool import RdsQueryTool
 from rds_update_tool import RdsUpdateTool
 
-llm = BedrockLLM(model="us.anthropic.claude-3-5-haiku-20241022-v1:0")
+llm = BedrockModel(model="us.anthropic.claude-3-5-haiku-20241022-v1:0")
 
 agent = Agent(
     llm=llm,
