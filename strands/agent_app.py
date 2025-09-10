@@ -7,18 +7,20 @@ from rds_update_tool import rds_update_tool
 llm = BedrockModel(model="us.anthropic.claude-3-5-haiku-20241022-v1:0")
 
 agent = Agent(
-    llm=llm,
+    model=llm,
     tools=[textract_tool, rds_query_tool, rds_update_tool]
 )
 
-instructions = """
-1. Use textract_tool to extract text from the uploaded document.
-2. Use rds_query_tool with the S3 key to fetch customer data.
-3. Compare the extracted text with the customer data.
-4. Respond only with one of: MATCH, NAME_MATCH, ADDRESS_MATCH, NO_MATCH, UNCERTAIN.
-5. After determining the result, call rds_update_tool to save it.
-"""
+
 
 def run_agent(bucket, key):
-    inputs = {"bucket": bucket, "key": key}
-    return agent.run(instructions, inputs=inputs)
+    instructions = """
+    1. Use textract_tool to extract text from the uploaded document in bucket "{bucket}" with key "{key}".
+    2. Use rds_query_tool with the S3 key "{key}" to fetch customer data.
+    3. Compare the extracted text with the customer data returned from rds_query_tool.
+    4. Respond only with one of: MATCH, NAME_MATCH, ADDRESS_MATCH, NO_MATCH, UNCERTAIN.
+    5. After determining the result, call rds_update_tool to save it. Use the S3 key "{key}" and the status you determined.
+    """
+    instructions = instructions.format(bucket=bucket, key=key)
+
+    return agent(instructions)
